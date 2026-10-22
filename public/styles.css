@@ -1133,58 +1133,427 @@ body {
     color: #dc2626;
 }
 
-/* Responsive adjustments across Phone, Tab, Desktop */
-@media (max-width: 480px) {
+
+/* =============================================================
+   COMPREHENSIVE MOBILE & TABLET RESPONSIVE ENGINE (320px - 768px)
+   ============================================================= */
+
+/* Universal Overflow Protection */
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    /* 1. Header / Navbar Layout */
+    .navbar {
+        padding: 0.35rem 0;
+    }
+
     .nav-container {
-        padding: 0.5rem 0.75rem;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.6rem !important;
+        padding: 0.6rem 0.85rem !important;
     }
-    .brand-college-title {
-        font-size: 0.95rem;
+
+    .brand-wrapper {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        gap: 0.5rem !important;
     }
-    .brand-sub-title {
-        font-size: 0.75rem;
+
+    .brand-logo-left, .brand-logo-right {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
     }
+
     .college-logo-img, .tn-logo-img {
-        height: 38px;
+        height: 42px !important;
+        width: auto !important;
     }
-    .auth-card {
-        padding: 1.5rem 1.15rem;
-        border-radius: 14px;
-    }
-    .books-grid {
-        grid-template-columns: 1fr;
-    }
-    .stats-row {
-        grid-template-columns: 1fr 1fr;
-    }
-    .metric-number {
-        font-size: 1.4rem;
-    }
-}
 
-@media (min-width: 481px) and (max-width: 768px) {
-    .nav-container {
-        flex-direction: column;
-        align-items: flex-start;
+    .brand-info {
+        flex: 1 !important;
+        min-width: 0 !important;
+        text-align: center !important;
+        padding: 0 0.25rem !important;
     }
+
+    .brand-college-title {
+        font-size: 0.98rem !important;
+        justify-content: center !important;
+        letter-spacing: -0.2px !important;
+        line-height: 1.25 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .brand-college-title i {
+        font-size: 0.88rem !important;
+    }
+
+    .brand-sub-title {
+        font-size: 0.72rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        margin-top: 1px !important;
+    }
+
     .nav-actions {
-        width: 100%;
-        justify-content: space-between;
-        overflow-x: auto;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        gap: 0.4rem !important;
+        flex-wrap: nowrap !important;
     }
+
+    .live-status-pill {
+        padding: 0.35rem 0.6rem !important;
+        font-size: 0.72rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    .icon-btn, .text-btn {
+        padding: 0.38rem 0.65rem !important;
+        font-size: 0.76rem !important;
+        flex-shrink: 0 !important;
+        gap: 0.35rem !important;
+    }
+
+    /* Hide long button labels on mobile, keep clean icons */
+    #navNoticeQrText, .nav-btn-poster-text {
+        display: none !important;
+    }
+
+    /* 2. Main Content & Verification Card */
+    .main-content {
+        padding: 1rem 0.75rem 2.5rem !important;
+    }
+
+    .auth-wrapper {
+        margin: 1rem auto 1.5rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 0.25rem !important;
+    }
+
+    .auth-card {
+        padding: 1.6rem 1.15rem !important;
+        border-radius: 18px !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .auth-icon-badge {
+        width: 54px !important;
+        height: 54px !important;
+        font-size: 1.45rem !important;
+        border-radius: 14px !important;
+        margin-bottom: 0.85rem !important;
+    }
+
+    .auth-title {
+        font-size: 1.25rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.35rem !important;
+    }
+
+    .auth-subtitle {
+        font-size: 0.82rem !important;
+        line-height: 1.4 !important;
+    }
+
+    .role-tabs {
+        margin-bottom: 1.25rem !important;
+        padding: 3px !important;
+    }
+
+    .role-tab {
+        padding: 0.58rem 0.35rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    .form-group {
+        margin-bottom: 1rem !important;
+    }
+
+    .form-label {
+        font-size: 0.82rem !important;
+    }
+
+    .text-input {
+        padding: 0.78rem 0.85rem 0.78rem 2.65rem !important;
+        font-size: 0.92rem !important;
+    }
+
+    .btn-primary-large {
+        padding: 0.85rem 1.25rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    .auth-notes {
+        margin-top: 1.25rem !important;
+        padding-top: 1rem !important;
+        gap: 0.55rem !important;
+    }
+
+    .note-row {
+        font-size: 0.76rem !important;
+    }
+
+    /* 3. User Welcome Banner & Profile */
+    .user-profile-banner {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 1rem 1.15rem !important;
+        gap: 0.85rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .user-profile-left {
+        align-items: center !important;
+        gap: 0.75rem !important;
+    }
+
+    .user-avatar-circle {
+        width: 46px !important;
+        height: 46px !important;
+        font-size: 1.2rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    .user-display-name {
+        font-size: 1.05rem !important;
+        flex-wrap: wrap !important;
+        gap: 0.4rem !important;
+    }
+
+    .user-meta-tags {
+        gap: 0.35rem !important;
+        margin-top: 0.25rem !important;
+    }
+
+    .meta-chip {
+        font-size: 0.72rem !important;
+        padding: 0.18rem 0.48rem !important;
+    }
+
+    .user-profile-actions {
+        width: 100% !important;
+    }
+
+    .user-profile-actions .logout-action-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 0.6rem !important;
+    }
+
+    /* 4. Statistics Grid (2x2 on Mobile) */
+    .stats-row {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.65rem !important;
+        margin-bottom: 1.15rem !important;
+    }
+
+    .stat-metric-card {
+        padding: 0.85rem 0.75rem !important;
+    }
+
+    .metric-info h4 {
+        font-size: 0.68rem !important;
+        letter-spacing: 0.2px !important;
+        margin-bottom: 0.15rem !important;
+    }
+
+    .metric-number {
+        font-size: 1.35rem !important;
+    }
+
+    .metric-icon-box {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 1.05rem !important;
+        border-radius: 9px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* 5. Search & Filters */
+    .search-toolbar {
+        padding: 0.85rem !important;
+        margin-bottom: 1.15rem !important;
+    }
+
+    .search-input-row {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    .search-box-expand {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .search-input-field {
+        padding: 0.75rem 0.85rem 0.75rem 2.6rem !important;
+        font-size: 0.88rem !important;
+    }
+
+    .filter-select {
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 0.75rem 0.85rem !important;
+        font-size: 0.84rem !important;
+    }
+
+    .quick-filter-chips {
+        margin-top: 0.65rem !important;
+        gap: 0.35rem !important;
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        padding-bottom: 6px !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .chip-btn {
+        font-size: 0.72rem !important;
+        padding: 0.32rem 0.65rem !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+    }
+
+    .catalog-results-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.35rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .results-count-title {
+        font-size: 0.95rem !important;
+    }
+
+    /* 6. Single Column Book Cards on Mobile */
     .books-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr !important;
+        gap: 0.85rem !important;
+    }
+
+    .book-card {
+        padding: 1rem !important;
+        border-radius: 14px !important;
+    }
+
+    .book-title {
+        font-size: 0.98rem !important;
+    }
+
+    .book-author {
+        font-size: 0.8rem !important;
+    }
+
+    .book-meta-grid {
+        font-size: 0.78rem !important;
+        gap: 0.35rem !important;
+    }
+
+    .book-qty-badge {
+        font-size: 0.72rem !important;
+        padding: 0.18rem 0.55rem !important;
+    }
+
+    .accno-chips-container {
+        gap: 0.25rem !important;
+    }
+
+    .accno-chip {
+        font-size: 0.68rem !important;
+        padding: 0.15rem 0.45rem !important;
+    }
+
+    /* 7. Notice QR Modal on Mobile */
+    .modal-card {
+        padding: 1.5rem 1rem !important;
+        border-radius: 18px !important;
+        max-width: 94vw !important;
+    }
+
+    .qr-preview-box {
+        padding: 0.65rem !important;
+        margin: 0.85rem auto !important;
+    }
+
+    .qr-preview-img {
+        width: 190px !important;
+        height: 190px !important;
+        max-width: 100% !important;
+    }
+
+    .qr-link-chip {
+        font-size: 0.75rem !important;
+        padding: 0.38rem 0.65rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .modal-actions {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    .modal-actions .btn-primary-large,
+    .modal-actions .text-btn {
+        width: 100% !important;
+        justify-content: center !important;
     }
 }
 
+/* Small Smartphone Tuning (iPhone SE, Galaxy A series, 320px - 440px) */
+@media (max-width: 440px) {
+    .college-logo-img, .tn-logo-img {
+        height: 36px !important;
+    }
+
+    .brand-college-title {
+        font-size: 0.86rem !important;
+    }
+
+    .brand-sub-title {
+        font-size: 0.66rem !important;
+    }
+
+    .live-status-pill #liveStatusText {
+        max-width: 85px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.5rem !important;
+    }
+
+    .metric-number {
+        font-size: 1.25rem !important;
+    }
+}
+
+/* Tablet & iPad Tuning (769px - 1100px) */
 @media (min-width: 769px) and (max-width: 1100px) {
     .books-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr) !important;
     }
 }
 
+/* Desktop Large Screen (1101px+) */
 @media (min-width: 1101px) {
     .books-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 1fr) !important;
     }
 }
