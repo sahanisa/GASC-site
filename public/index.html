@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GASC Idappadi - Live Library Book Availability Portal</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Offline & CDN FontAwesome Icons -->
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- =========================================================================
+         TOP NAVIGATION BAR (College Header with Dual Logos)
+         ========================================================================= -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="brand-wrapper">
+                <!-- College Logo (Left) -->
+                <div class="brand-logo-left">
+                    <img src="logo.png" alt="College Logo" class="college-logo-img" onerror="this.src='Picture1.png';" />
+                </div>
+                <!-- Brand Title Block -->
+                <div class="brand-info">
+                    <h1 class="brand-college-title">
+                        <i class="fas fa-book-reader"></i>
+                        <span id="brandTitleText">GASC Idappadi Library</span>
+                    </h1>
+                    <span class="brand-sub-title" id="brandSubtitleText">Govt Arts &amp; Science College · Idappadi</span>
+                </div>
+                <!-- Tamil Nadu Govt Logo (Right of Brand) -->
+                <div class="brand-logo-right">
+                    <img src="tamilnadu.png" alt="Tamil Nadu Government" class="tn-logo-img" onerror="this.style.display='none'" />
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="nav-actions">
+                <!-- Live DB Status -->
+                <div class="live-status-pill">
+                    <span class="pulse-dot"></span>
+                    <span id="liveStatusText">Live Database Connected</span>
+                </div>
+
+                <!-- Notice Board QR Code Button -->
+                <button class="icon-btn qr-btn" onclick="openQrModal()" title="View Notice Board QR / அறிவிப்பு பலகை QR">
+                    <i class="fas fa-qrcode"></i>
+                    <span id="navNoticeQrText">Notice Board QR</span>
+                </button>
+
+                <!-- Printable Poster Link -->
+                <a href="poster.html" target="_blank" class="icon-btn" title="Open Printable Notice Board Poster (A4)">
+                    <i class="fas fa-print"></i>
+                    <span>Poster (A4)</span>
+                </a>
+
+                <!-- Bilingual Switcher -->
+                <button class="icon-btn" onclick="toggleLanguage()" title="மொழியை மாற்று / Switch Language">
+                    <i class="fas fa-globe"></i>
+                    <span id="currentLangLabel">தமிழ்</span>
+                </button>
+
+                <!-- Theme Switcher -->
+                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                    <i class="fas fa-sun" id="themeToggleIcon"></i>
+                </button>
+
+                <!-- Logged In User Pill Actions -->
+                <div id="navUserActions" class="hidden">
+                    <button class="logout-action-btn" onclick="logoutUser()" title="Logout / Switch User">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span id="btnLogoutText">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- =========================================================================
+         MAIN APPLICATION CONTENT
+         ========================================================================= -->
+    <main class="main-content">
+        
+        <!-- -------------------------------------------------------------
+             1. AUTHENTICATION & VERIFICATION GATE VIEW (Logged-Out)
+             ------------------------------------------------------------- -->
+        <section class="auth-wrapper" id="authSection">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-icon-badge">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h2 class="auth-title" id="authCardTitle">Library Member Verification</h2>
+                    <p class="auth-subtitle" id="authCardSubtitle">
+                        Enter your registered Student Register Number (e.g., C24UG183CSC001) or Faculty Email to access live book availability.
+                    </p>
+                </div>
+
+                <!-- Role Selector Tabs -->
+                <div class="role-tabs">
+                    <button class="role-tab active" id="tabStudent" onclick="switchRoleTab('student')">
+                        <i class="fas fa-user-graduate"></i>
+                        <span id="txtStudentTab">Student (Reg No)</span>
+                    </button>
+                    <button class="role-tab" id="tabFaculty" onclick="switchRoleTab('faculty')">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span id="txtFacultyTab">Faculty (Email)</span>
+                    </button>
+                </div>
+
+                <!-- Verification Form -->
+                <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="authIdentifierInput" id="authInputLabel">Student Register Number</label>
+                        <div class="input-container">
+                            <i class="fas fa-id-card input-icon" id="authInputIcon"></i>
+                            <input 
+                                type="text" 
+                                id="authIdentifierInput" 
+                                class="text-input text-uppercase" 
+                                placeholder="e.g. C24UG183CSC001" 
+                                autocomplete="off" 
+                                required 
+                                oninput="handleIdentifierInput(this)"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Red Error Banner (When user is not in database) -->
+                    <div id="authErrorBox" class="alert-box alert-danger hidden">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <span class="alert-text-bold" id="authErrorTitle">Access Denied · User Not Found</span>
+                            <span id="authErrorDesc">This register number is not registered in the college library system.</span>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-primary-large" id="authSubmitBtn">
+                        <i class="fas fa-spinner fa-spin hidden" id="authBtnSpinner"></i>
+                        <i class="fas fa-arrow-right"></i>
+                        <span id="authBtnText">Verify &amp; Access Catalog</span>
+                    </button>
+                </form>
+
+                <!-- Security & Notice Footer -->
+                <div class="auth-notes">
+                    <div class="note-row">
+                        <i class="fas fa-check-circle"></i>
+                        <span id="txtNote1">Real-time physical book shelf &amp; borrow status</span>
+                    </div>
+                    <div class="note-row">
+                        <i class="fas fa-user-shield"></i>
+                        <span id="txtNote2">Restricted to verified students &amp; faculty members only</span>
+                    </div>
+                    <div class="note-row">
+                        <i class="fas fa-wifi"></i>
+                        <span id="txtNote3">Accessible from home or anywhere on college Wi-Fi</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- -------------------------------------------------------------
+             2. LOGGED-IN CATALOG & DASHBOARD VIEW
+             ------------------------------------------------------------- -->
+        <section class="dashboard-view hidden" id="dashboardSection">
+            
+            <!-- User Profile Welcome Banner -->
+            <div class="user-profile-banner">
+                <div class="user-profile-left">
+                    <div class="user-avatar-circle" id="userAvatarCircle">S</div>
+                    <div class="user-meta-details">
+                        <div class="user-display-name">
+                            <span id="userDisplayName">Student Name</span>
+                            <span class="user-role-badge" id="userRoleBadge">Student</span>
+                        </div>
+                        <div class="user-meta-tags" id="userMetaTags">
+                            <!-- Populated dynamically (RegNo, Dept, Year, BloodGroup) -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="user-profile-actions">
+                    <button class="logout-action-btn" onclick="logoutUser()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Switch User</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Library Statistics Row -->
+            <div class="stats-row">
+                <div class="stat-metric-card card-books">
+                    <div class="metric-info">
+                        <h4 id="lblMetricTotal">Total Book Titles</h4>
+                        <div class="metric-number" id="metricTotalCount">--</div>
+                    </div>
+                    <div class="metric-icon-box">
+                        <i class="fas fa-book"></i>
+                    </div>
+                </div>
+
+                <div class="stat-metric-card card-available">
+                    <div class="metric-info">
+                        <h4 id="lblMetricAvail">Available on Shelf</h4>
+                        <div class="metric-number" id="metricAvailCount" style="color:var(--success);">--</div>
+                    </div>
+                    <div class="metric-icon-box">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+
+                <div class="stat-metric-card card-borrowed">
+                    <div class="metric-info">
+                        <h4 id="lblMetricBorrow">Currently Borrowed</h4>
+                        <div class="metric-number" id="metricBorrowCount" style="color:var(--danger);">--</div>
+                    </div>
+                    <div class="metric-icon-box">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
+                </div>
+
+                <div class="stat-metric-card card-mybooks" style="cursor:pointer;" onclick="setQuickFilter('MY_LOANS', document.getElementById('chipMyLoans'))">
+                    <div class="metric-info">
+                        <h4 id="lblMetricMyBooks">Your Active Loans</h4>
+                        <div class="metric-number" id="metricMyBooksCount" style="color:var(--warning);">0</div>
+                    </div>
+                    <div class="metric-icon-box">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Filter Controls -->
+            <div class="search-toolbar">
+                <div class="search-input-row">
+                    <div class="search-box-expand">
+                        <i class="fas fa-search"></i>
+                        <input 
+                            type="text" 
+                            id="catalogSearchInput" 
+                            class="search-input-field" 
+                            placeholder="Search by Book Title, Accession No (e.g. CS001), Author, Subject..." 
+                            oninput="handleSearchInput(event)" 
+                        />
+                    </div>
+
+                    <select id="deptFilterSelect" class="filter-select" onchange="handleDeptFilterChange(event)">
+                        <option value="ALL">All Departments</option>
+                    </select>
+                </div>
+
+                <!-- Quick Filter Chips -->
+                <div class="quick-filter-chips">
+                    <button class="chip-btn active" id="chipAll" onclick="setQuickFilter('ALL', this)">
+                        <span id="chipAllText">All Titles</span>
+                    </button>
+                    <button class="chip-btn" id="chipAvail" onclick="setQuickFilter('AVAILABLE', this)">
+                        <span id="chipAvailText">🟢 Available in Library</span>
+                    </button>
+                    <button class="chip-btn" id="chipBorrow" onclick="setQuickFilter('BORROWED', this)">
+                        <span id="chipBorrowText">🔴 Currently Borrowed</span>
+                    </button>
+                    <button class="chip-btn" id="chipMyLoans" onclick="setQuickFilter('MY_LOANS', this)">
+                        <span id="chipMyText">📚 My Borrowed Books</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Catalog Results Header -->
+            <div class="catalog-results-header">
+                <h3 class="results-count-title" id="resultsCountDisplay">Searching library collection...</h3>
+            </div>
+
+            <!-- Loading State -->
+            <div id="catalogLoadingState" class="state-container hidden">
+                <i class="fas fa-circle-notch fa-spin state-icon"></i>
+                <div class="state-title">Checking Real-Time Shelf Stock...</div>
+                <div class="state-desc">Synchronizing with GASC Library database engine</div>
+            </div>
+
+            <!-- Empty Results State -->
+            <div id="catalogEmptyState" class="state-container hidden">
+                <i class="fas fa-search-minus state-icon"></i>
+                <div class="state-title" id="emptyStateTitle">No books found</div>
+                <div class="state-desc" id="emptyStateDesc">Try adjusting keywords or selecting 'All Departments' to see more results.</div>
+            </div>
+
+            <!-- Books Grid Container -->
+            <div class="books-grid" id="booksGridContainer">
+                <!-- Dynamically populated with physical availability status -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- =========================================================================
+         NOTICE BOARD QR CODE MODAL
+         ========================================================================= -->
+    <div class="modal-overlay" id="qrModal" onclick="if(event.target === this) closeQrModal()">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeQrModal()">&times;</button>
+            
+            <h2 style="font-size:1.35rem;font-weight:800;margin-bottom:4px;" id="qrModalTitleText">Notice Board QR Code</h2>
+            <p style="font-size:0.88rem;color:var(--text-muted);" id="qrModalSubtitleText">Scan with your mobile camera or Google Lens to check physical book availability.</p>
+
+            <div class="qr-preview-box">
+                <img id="modalQrImage" src="library-qr.png" alt="Library Portal QR" class="qr-preview-img" />
+            </div>
+
+            <div>
+                <span style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;" id="qrDirectUrlLabel">Direct Mobile URL:</span>
+                <a id="modalPortalUrl" href="#" target="_blank" class="qr-link-chip">http://localhost:5000</a>
+            </div>
+
+            <div class="modal-actions">
+                <a href="poster.html" target="_blank" class="icon-btn qr-btn" style="padding:0.65rem 1.15rem;">
+                    <i class="fas fa-print"></i> <span id="btnPrintPosterText">Open Printable A4 Poster</span>
+                </a>
+                <button class="icon-btn" onclick="downloadQrPng()" style="padding:0.65rem 1.15rem;">
+                    <i class="fas fa-download"></i> <span id="btnDownloadQrText">Download QR PNG</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         FOOTER
+         ========================================================================= -->
+    <footer class="footer">
+        <div>
+            <strong>Government Arts &amp; Science College, Idappadi</strong> · Library Smart Connect Portal 2.0
+        </div>
+        <div style="margin-top:4px;color:var(--text-dim);">
+            Real-time Physical Stock Sync Enabled 🟢 · Department of Computer Science &amp; Library Science
+        </div>
+    </footer>
+
+    <!-- App JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GASC Library - Notice Board Poster (Printable A4)</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-accent: #2563eb;
+            --text-dark: #0f172a;
+            --text-muted: #334155;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+
+        /* Top Action Bar (hidden on print) */
+        .top-action-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            background: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        .action-btn {
+            background: var(--primary-accent);
+            color: #ffffff;
+            border: none;
+            padding: 0.65rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            background: #f8fafc;
+            color: var(--text-dark);
+        }
+
+        /* A4 Poster Page Sheet */
+        .poster-sheet {
+            width: 210mm;
+            min-height: 297mm;
+            background: #ffffff;
+            padding: 12mm 15mm;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border: 2px solid #0f172a;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .poster-inner-border {
+            border: 2.5px solid var(--primary);
+            height: 100%;
+            padding: 10mm 10mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* Poster Header */
+        .poster-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 12px;
+            text-align: center;
+        }
+
+        .logo-img {
+            height: 75px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .header-titles {
+            flex: 1;
+            padding: 0 12px;
+        }
+
+        .govt-tamil {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #831843;
+            letter-spacing: 0.5px;
+        }
+
+        .govt-eng {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #1e293b;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 1px;
+        }
+
+        .college-name-tamil {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-top: 3px;
+        }
+
+        .college-name-eng {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: 0.3px;
+        }
+
+        .dept-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #475569;
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* Banner Tag */
+        .notice-banner {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: #ffffff;
+            text-align: center;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin: 14px 0;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
+        }
+
+        .notice-tag-sub {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #fde047;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .notice-tag-main {
+            font-size: 1.45rem;
+            font-weight: 900;
+            line-height: 1.25;
+            margin-top: 3px;
+        }
+
+        .notice-tag-tamil {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #e0f2fe;
+            margin-top: 2px;
+        }
+
+        /* QR Code Center Stage */
+        .qr-center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border: 2px dashed #94a3b8;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .scan-pill {
+            background: #1e293b;
+            color: #ffffff;
+            font-size: 0.88rem;
+            font-weight: 800;
+            padding: 5px 16px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .qr-frame {
+            background: #ffffff;
+            border: 3px solid #0f172a;
+            border-radius: 12px;
+            padding: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .qr-image {
+            width: 220px;
+            height: 220px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .portal-url-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-top: 10px;
+            background: #e0f2fe;
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid #7dd3fc;
+        }
+
+        /* Step-by-Step Instructions */
+        .steps-container {
+            margin: 12px 0;
+        }
+
+        .steps-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #0f172a;
+            text-align: center;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .step-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: #2563eb;
+            color: #ffffff;
+            font-weight: 900;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .step-heading {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.25;
+            margin-bottom: 3px;
+        }
+
+        .step-tamil {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #475569;
+            line-height: 1.2;
+        }
+
+        /* Notice Box */
+        .security-notice-box {
+            background: #fffbeb;
+            border: 1.5px solid #fde68a;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #92400e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .security-notice-box i {
+            font-size: 1.25rem;
+            color: #d97706;
+        }
+
+        .security-notice-text {
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        /* Poster Footer */
+        .poster-footer {
+            border-top: 1.5px solid var(--border-color);
+            padding-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        /* PRINT OPTIMIZATION (Pure A4 without headers/footers/margins) */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            .top-action-bar {
+                display: none !important;
+            }
+            .poster-sheet {
+                box-shadow: none;
+                border: none;
+                width: 100%;
+                min-height: 100vh;
+                padding: 0;
+            }
+            .poster-inner-border {
+                border-width: 2px;
+                padding: 8mm;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 8mm;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP CONTROL BAR -->
+    <div class="top-action-bar">
+        <a href="/" class="action-btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Live Portal</a>
+        <button onclick="window.print()" class="action-btn"><i class="fas fa-print"></i> Print Poster (A4 Notice Board)</button>
+    </div>
+
+    <!-- PRINTABLE A4 NOTICE BOARD POSTER -->
+    <div class="poster-sheet">
+        <div class="poster-inner-border">
+            
+            <!-- HEADER -->
+            <header class="poster-header">
+                <img src="logo.png" alt="College Logo" class="logo-img" onerror="this.src='Picture1.png';" />
+                <div class="header-titles">
+                    <div class="govt-tamil">தமிழ்நாடு அரசு</div>
+                    <div class="govt-eng">Government of Tamil Nadu</div>
+                    <div class="college-name-tamil">அரசுக் கலை மற்றும் அறிவியல் கல்லூரி, எடப்பாடி</div>
+                    <div class="college-name-eng">GOVERNMENT ARTS &amp; SCIENCE COLLEGE, IDAPPADI</div>
+                    <div class="dept-title">Library Smart Connect · Information Resource Centre</div>
+                </div>
+                <img src="tamilnadu.png" alt="Tamil Nadu Government" class="logo-img" />
+            </header>
+
+            <!-- MAIN NOTICE BANNER -->
+            <div class="notice-banner">
+                <div class="notice-tag-sub">★ LIBRARY NOTICE BOARD ANNOUNCEMENT ★</div>
+                <h1 class="notice-tag-main">SCAN TO CHECK PHYSICAL BOOK AVAILABILITY</h1>
+                <div class="notice-tag-tamil">வீட்டிலிருந்தே நூலகப் புத்தக இருப்பை அறிய ஸ்கேன் செய்க!</div>
+            </div>
+
+            <!-- QR CODE STAGE -->
+            <div class="qr-center-container">
+                <div class="scan-pill">
+                    <i class="fas fa-camera"></i> SCAN WITH MOBILE CAMERA / GOOGLE LENS
+                </div>
+                
+                <div class="qr-frame">
+                    <img id="posterQrImage" src="library-qr.png" alt="Library Portal QR Code" class="qr-image" onerror="fetchLiveQr()" />
+                </div>
+
+                <div class="portal-url-display" id="posterPortalUrl">http://localhost:5000</div>
+                <small style="color:#64748b;font-weight:700;margin-top:4px;">Connect to College Wi-Fi / Open in Mobile Browser</small>
+            </div>
+
+            <!-- STEP BY STEP GUIDE -->
+            <div class="steps-container">
+                <div class="steps-title">3 Simple Steps to Access / 3 எளிய வழிகள்</div>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-heading">Scan QR Code</div>
+                        <div class="step-tamil">உங்கள் மொபைல் கேமரா மூலம் QR குறியீட்டை ஸ்கேன் செய்க.</div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-heading">Enter RegNo / Email</div>
+                        <div class="step-tamil">மாணவர் பதிவு எண் அல்லது ஆசிரியர் மின்னஞ்சலை உள்ளிடவும்.</div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-heading">Check Live Stock</div>
+                        <div class="step-tamil">புத்தகம் அலமாரியில் உள்ளதா அல்லது கடனில் உள்ளதா என உடனடியாக அறிக.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECURITY & REGISTRATION NOTICE -->
+            <div class="security-notice-box">
+                <i class="fas fa-shield-alt"></i>
+                <div class="security-notice-text">
+                    <strong>RESTRICTED ACCESS:</strong> Only registered Students (Reg No) and Faculty members of GASC Idappadi can search catalog books. If your Reg No or Email is not recognized, please visit the Librarian to get registered.
+                </div>
+            </div>
+
+            <!-- POSTER FOOTER -->
+            <footer class="poster-footer">
+                <div>Published by: Department of Library &amp; Information Science · GASC Idappadi</div>
+                <div>Real-Time Physical Stock Sync Enabled 🟢</div>
+            </footer>
+
+        </div>
+    </div>
+
+    <script src="js/qrcode.min.js"></script>
+    <script>
+        async function fetchLiveQr() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                let targetUrl = params.get('url');
+
+                if (!targetUrl) {
+                    const res = await fetch('/api/system/info').catch(() => null);
+                    if (res && res.ok) {
+                        const data = await res.json();
+                        if (data.success && data.portalUrl) targetUrl = data.portalUrl;
+                    }
+                }
+
+                if (!targetUrl) {
+                    targetUrl = window.location.origin.includes('5000') || window.location.origin.includes('onrender.com') 
+                        ? window.location.origin 
+                        : (window.location.protocol + '//' + window.location.hostname + ':5000');
+                }
+
+                document.getElementById('posterPortalUrl').textContent = targetUrl;
+
+                // Render QR code directly in frame using client-side QRCode
+                const frame = document.querySelector('.qr-frame');
+                if (frame && typeof QRCode !== 'undefined') {
+                    frame.innerHTML = '';
+                    new QRCode(frame, {
+                        text: targetUrl,
+                        width: 220,
+                        height: 220,
+                        colorDark: '#0f172a',
+                        colorLight: '#ffffff',
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                } else if (document.getElementById('posterQrImage')) {
+                    document.getElementById('posterQrImage').src = '/api/system/qr.png?url=' + encodeURIComponent(targetUrl);
+                }
+            } catch (e) {
+                console.warn('Live QR error:', e);
+            }
+        }
+        fetchLiveQr();
+    </script>
+</body>
+</html>
